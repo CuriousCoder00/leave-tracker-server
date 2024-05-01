@@ -1,8 +1,11 @@
 const express = require("express");
 require("./db");
 const cors = require("cors");
+const serverless = require("serverless-http");
 const Leave = require("./leaveSchema");
+
 const app = express();
+const router = express.Router();
 app.use(cors());
 // parse requests of content-type - application/json
 app.use(express.json());
@@ -10,7 +13,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
 
 // Define the GET endpoint for fetching leave history
-app.get("/leave-history", async (req, res) => {
+router.get("/leave-history", async (req, res) => {
   try {
     const leaveHistory = await Leave.find();
     res.json(leaveHistory);
@@ -20,7 +23,7 @@ app.get("/leave-history", async (req, res) => {
   }
 });
 
-app.post("/submit", async (req, res) => {
+router.post("/submit", async (req, res) => {
   const leave = new Leave({
     employeeName: req.body.employeeName,
     leaveType: req.body.leaveType,
@@ -38,9 +41,13 @@ app.post("/submit", async (req, res) => {
   }
 });
 
-app.get("/", (req, res) => {
+router.get("/", (req, res) => {
   res.send("Hello World!");
 });
-app.listen(5555, () =>
-  console.log("Server is running on http://localhost:5555")
-);
+
+// app.use("/.netlify/functions/server", router);
+// module.exports.handler = serverless(app);
+
+app.listen(3000, () => {
+  console.log("Server is running on port 3000");
+});
