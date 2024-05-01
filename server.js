@@ -48,6 +48,6 @@ router.get("/", (req, res) => {
 // app.use("/.netlify/functions/server", router);
 // module.exports.handler = serverless(app);
 
-app.listen(3000, () => {
+app.listen(5555, () => {
   console.log("Server is running on port 3000");
 });
