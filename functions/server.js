@@ -1,5 +1,5 @@
 const express = require("express");
-const mongoose = require("mongoose");
+require("./db");
 const cors = require("cors");
 const Leave = require("./leaveSchema");
 const app = express();
@@ -8,16 +8,6 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
-app.use("/.Server/leaveSchema.js", express.static(__dirname + "/leaveSchema.js"));
-app.use("/.Server/db.js", express.static(__dirname + "/db.js"));
-app.use("/.Server/server.js", express.static(__dirname + "/server.js"));
-app.use("/.Server", express.static(__dirname + "/"));
-app.use("/.Client", express.static(__dirname + "/"));
-
-mongoose
-  .connect("mongodb+srv://ayush:ayush@cluster0.hkkuuyw.mongodb.net/")
-  .then(() => console.log("Connected to MongoDB"))
-  .catch((err) => console.error("Could not connect to MongoDB", err));
 
 // Define the GET endpoint for fetching leave history
 app.get("/leave-history", async (req, res) => {
